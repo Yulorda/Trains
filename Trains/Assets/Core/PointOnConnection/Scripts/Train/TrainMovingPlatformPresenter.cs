@@ -1,7 +1,7 @@
 ﻿using UniRx;
 using UnityEngine;
 
-public class PointOnConnectionPresenter : PresenterBehaviour<IPointOnConnection>
+public class TrainMovingPlatformPresenter : PresenterBehaviour<Train>
 {
     [SerializeField]
     private EmissionHighlighter highlighter;
@@ -32,12 +32,12 @@ public class PointOnConnectionPresenter : PresenterBehaviour<IPointOnConnection>
 
     private void SetPostion(float value)
     {
-        transform.position = PointStart + (PointEnd - PointStart) * value;
+        transform.position = MathExtension.GetPointOnLine(PointStart, PointEnd, value);
     }
 
     private void OnConnectionChangePosition()
     {
-        transform.position = PointStart + (PointEnd - PointStart) * model.Position.Value;
+        transform.position = MathExtension.GetPointOnLine(PointStart, PointEnd, model.Position.Value);
     }
 
     private void OnMouseUp()
@@ -52,12 +52,8 @@ public class PointOnConnectionPresenter : PresenterBehaviour<IPointOnConnection>
 
     private void OnMouseDrag()
     {
-        var line = PointEnd - PointStart;
         Vector3 distanceToScreen = Camera.main.WorldToScreenPoint(transform.position);
         Vector3 point = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceToScreen.z));
-        Vector3 pToStart = point - PointStart;
-        float coef = Mathf.Clamp(Vector3.Dot(pToStart, line.normalized) / line.magnitude, 0, 1);
-        model.Position.Value = coef;
-        transform.position = PointStart + line * coef;
+        model.Position.Value = MathExtension.GetPointOnLine(PointStart, PointEnd, point);
     }
 }

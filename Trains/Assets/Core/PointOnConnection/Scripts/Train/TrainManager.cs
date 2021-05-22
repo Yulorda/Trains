@@ -1,26 +1,32 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class PointOnConnectionManagerPresenter : PresenterBehaviour<PointOnConnectionManager>
+public class TrainManager : MonoBehaviour
 {
-    public void Create()
+    private void Awake()
     {
-        StopAllCoroutines();
-        StartCoroutine(FindLineToCreate());
+        Manager.GetInstance().RegistrateOnModelRemove<Road>(this, OnConnectionRemove);
     }
 
-    public void Delete()
+    public virtual void Create()
     {
         StopAllCoroutines();
-        StartCoroutine(DeletePointToConnection());
+        StartCoroutine(CreateCoroutine());
     }
 
-    public void Return()
+    public virtual void Delete()
+    {
+        StopAllCoroutines();
+        StartCoroutine(DeleteCoroutine());
+    }
+
+    public virtual void Return()
     {
         StopAllCoroutines();
     }
 
-    private IEnumerator DeletePointToConnection()
+    protected IEnumerator DeleteCoroutine()
     {
         while (true)
         {
@@ -35,10 +41,10 @@ public class PointOnConnectionManagerPresenter : PresenterBehaviour<PointOnConne
                 {
                     if (hit.collider != null)
                     {
-                        var connectorPresenter = hit.collider.gameObject.GetComponent<PointOnConnectionPresenter>();
+                        var connectorPresenter = hit.collider.gameObject.GetComponent<TrainMovingPlatformPresenter>();
                         if (connectorPresenter != null)
                         {
-                            model.Remove(connectorPresenter.model);
+                            Manager.GetInstance().Remove(connectorPresenter.model);
                         }
                     }
                 }
@@ -47,8 +53,7 @@ public class PointOnConnectionManagerPresenter : PresenterBehaviour<PointOnConne
             }
         }
     }
-
-    private IEnumerator FindLineToCreate()
+    protected IEnumerator CreateCoroutine()
     {
         while (true)
         {
@@ -63,15 +68,12 @@ public class PointOnConnectionManagerPresenter : PresenterBehaviour<PointOnConne
                 {
                     if (hit.collider != null)
                     {
-                        var connectorPresenter = hit.collider.gameObject.GetComponentInParent<PresenterBehaviour<IConnection>>();
+                        var connectorPresenter = hit.collider.gameObject.GetComponentInParent<RoadLRPresenter>();
 
                         var result = connectorPresenter?.model;
                         if (result != null)
                         {
-                            IPointOnConnection train = new Train();
-                            train.Connection.Value = result;
-                            train.Position.Value = GetPointOnLine(result, hit.point);
-                            model.Create(train);
+                            Create(result, hit);
                         }
                     }
                 }
@@ -79,14 +81,29 @@ public class PointOnConnectionManagerPresenter : PresenterBehaviour<PointOnConne
             }
         }
     }
-
-    private float GetPointOnLine(IConnection connection, Vector3 point)
+    public void Create(IConnection connection, RaycastHit hit)
     {
         var start = connection.PointStart.Value.Position.Value;
         var end = connection.PointEnd.Value.Position.Value;
+        Train train = new Train(connection, MathExtension.GetPointOnLine(start, end, hit.point));
+        Manager.GetInstance().RegistrateModel(train);
+    }
 
-        var line = end - start;
-        Vector3 pToStart = point - start;
-        return Mathf.Clamp(Vector3.Dot(pToStart, line.normalized) / line.magnitude, 0, 1);
+    private void OnConnectionRemove(Road road)
+    {
+        List<Train> removeList = new List<Train>();
+
+        foreach (Train train in Manager.GetInstance().models[typeof(Train)])
+        {
+            if (train.Connection.Value == road)
+            {
+                removeList.Add(train);
+            }
+        }
+
+        foreach (var train in removeList)
+        {
+            Manager.GetInstance().Remove(train);
+        }
     }
 }

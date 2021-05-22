@@ -2,8 +2,8 @@
 
 public class Road : IConnection
 {
-    ReactiveProperty<IConnectionPoint> IConnection.PointStart => pointStart;
-    ReactiveProperty<IConnectionPoint> IConnection.PointEnd => pointEnd;
+    public ReactiveProperty<IConnectionPoint> PointStart => pointStart;
+    public ReactiveProperty<IConnectionPoint> PointEnd => pointEnd;
 
     private ReactiveProperty<IConnectionPoint> pointStart = new ReactiveProperty<IConnectionPoint>();
     private ReactiveProperty<IConnectionPoint> pointEnd = new ReactiveProperty<IConnectionPoint>();

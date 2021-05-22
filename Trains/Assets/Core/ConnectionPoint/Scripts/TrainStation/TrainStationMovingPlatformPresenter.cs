@@ -2,7 +2,7 @@
 using UniRx;
 using UnityEngine;
 
-public class ConnectionPointPresenter : PresenterBehaviour<IConnectionPoint>
+public class TrainStationMovingPlatformPresenter : PresenterBehaviour<TrainStation>
 {
     [SerializeField]
     private EmissionHighlighter highlighter;

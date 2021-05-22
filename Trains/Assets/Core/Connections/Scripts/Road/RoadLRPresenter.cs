@@ -1,7 +1,7 @@
 ﻿using UniRx;
 using UnityEngine;
 
-public class ConnectionLinePresenter : PresenterBehaviour<IConnection>
+public class RoadLRPresenter : PresenterBehaviour<Road>
 {
     [SerializeField]
     private LineRenderer lineRenderer;
