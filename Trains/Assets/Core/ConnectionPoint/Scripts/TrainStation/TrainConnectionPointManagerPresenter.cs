@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class TrainConnectionPointPresenter : PresenterBehaviour<ConnectionPointManager>
+public class TrainConnectionPointManagerPresenter : PresenterBehaviour<ConnectionPointManager>
 {
     //Zenject ??
 

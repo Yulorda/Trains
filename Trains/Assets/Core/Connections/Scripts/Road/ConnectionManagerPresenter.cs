@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class LineRendererConnectionPresenter : PresenterBehaviour<ConnectionManager>
+public class ConnectionManagerPresenter : PresenterBehaviour<ConnectionManager>
 {
     private IConnectionPoint pointStart;
     private IConnectionPoint pointEnd;
