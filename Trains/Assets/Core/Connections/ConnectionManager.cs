@@ -2,16 +2,13 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
-public class ConnectionModeManager : MonoBehaviour
+public class ConnectionManager : MonoBehaviour
 {
     [SerializeField]
     private ConnectionLinePresenterFactory connectionPresenterFactory;
 
     [SerializeField]
-    private ConnectionCreator connectionCreator;
-
-    [SerializeField]
-    private ConnectionPointMode connectorModeManager;
+    private ConnectionPointManager connectorModeManager;
 
     [HideInInspector]
     public ReactiveCollection<IConnection> connections = new ReactiveCollection<IConnection>();
@@ -29,6 +26,7 @@ public class ConnectionModeManager : MonoBehaviour
         {
             var presenter = connectionPresenterFactory.Create(connection);
             disposableGroup.Add(connection, presenter);
+            connections.Add(connection);
         }
     }
 
@@ -38,13 +36,19 @@ public class ConnectionModeManager : MonoBehaviour
         disposableGroup.Dispose();
     }
 
+    public void Remove(IConnection connection)
+    {
+        connections.Remove(connection);
+        disposableGroup.Dispose(connection);
+    }
+
     private void OnRemoveConnectionPoint(IConnectionPoint connectionPoint)
     {
         List<IConnection> removeList = new List<IConnection>();
 
         foreach(var connection in connections)
         {
-            if(connectionPoint == connection.PointStart || connectionPoint == connection.PointEnd)
+            if(connectionPoint == connection.PointStart.Value || connectionPoint == connection.PointEnd.Value)
             {
                 removeList.Add(connection);
             }
@@ -67,7 +71,7 @@ public class ConnectionModeManager : MonoBehaviour
                 {
                     continue;
                 }
-                else if (save.PointEnd.Value != connection.PointStart.Value || save.PointEnd.Value != connection.PointEnd.Value)
+                else if (save.PointEnd.Value != connection.PointEnd.Value && save.PointEnd.Value != connection.PointStart.Value)
                 {
                     continue;
                 }

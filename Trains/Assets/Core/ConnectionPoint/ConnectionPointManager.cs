@@ -1,7 +1,7 @@
 using UniRx;
 using UnityEngine;
 
-public class ConnectionPointMode : MonoBehaviour
+public class ConnectionPointManager : MonoBehaviour
 {
     [SerializeField]
     ConnectionPointPresenterFactory pointPresenterFactory;
@@ -22,8 +22,15 @@ public class ConnectionPointMode : MonoBehaviour
         followMouseMover.Inject(connectionPoint);
     }
 
+    public void Remove(IConnectionPoint connectionPoint)
+    {
+        connectionPoints.Remove(connectionPoint);
+        disposableGroup.Dispose(connectionPoint);
+    }
+
     public void Clear()
     {
         disposableGroup.Dispose();
+        connectionPoints.Clear();
     }
 }

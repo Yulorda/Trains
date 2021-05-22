@@ -1,33 +1,65 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ConnectionCreator : MonoBehaviour
+public class LineRendererConnectionPresenter : PresenterBehaviour<ConnectionManager>
 {
-    [SerializeField]
-    private ConnectionModeManager manager;
-
     private IConnectionPoint pointStart;
     private IConnectionPoint pointEnd;
 
     public void Create()
     {
+        StopAllCoroutines();
         pointStart = null;
         pointEnd = null;
         StartCoroutine(FindPoint());
     }
 
-    public void Stop()
+    public void Delete()
     {
         StopAllCoroutines();
+        StartCoroutine(DeleteConnection());
+    }
+
+    public void Return()
+    {
+        StopAllCoroutines();
+    }
+
+    private IEnumerator DeleteConnection()
+    {
+        while (true)
+        {
+            yield return null;
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider != null)
+                    {
+                        var connectorPresenter = hit.collider.gameObject.GetComponentInParent<ConnectionLinePresenter>();
+                        if(connectorPresenter!=null)
+                        {
+                            model.Remove(connectorPresenter.model);
+                        }
+                    }
+                }
+
+                yield break;
+            }
+        }
     }
 
     private IEnumerator FindPoint()
     {
         while (true)
         {
-            yield return new WaitForEndOfFrame();
+            yield return null;
 
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 if (pointStart == null)
                 {
@@ -39,7 +71,7 @@ public class ConnectionCreator : MonoBehaviour
                     pointEnd = GetPoint();
                     if (pointEnd != null)
                     {
-                        manager.Create(new Road(pointStart, pointEnd));
+                        model.Create(new Road(pointStart, pointEnd));
                         break;
                     }
                 }
