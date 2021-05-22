@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 public class SelectableGroup
 {
@@ -25,7 +24,7 @@ public class SelectableGroup
         {
             if (!selectable.IsSelected.Value)
             {
-                selectable.Select();
+                selectable.IsSelected.SetValueAndForceNotify(true);
             }
         }
     }
@@ -34,7 +33,7 @@ public class SelectableGroup
     {
         foreach (var selectable in selectables)
         {
-            selectable.UnSelect();
+            selectable.IsSelected.SetValueAndForceNotify(false);
         }
     }
 
