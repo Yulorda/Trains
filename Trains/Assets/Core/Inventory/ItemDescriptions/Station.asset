@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3f60c542923e846a456f07d7ec0a89, type: 3}
   m_Name: Station
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: deff523119383274087d074d3a10df04, type: 3}
+  icon: {fileID: 21300000, guid: da63065032b493449b7dd8c6163252c4, type: 3}
   itemName: 
   description: 
