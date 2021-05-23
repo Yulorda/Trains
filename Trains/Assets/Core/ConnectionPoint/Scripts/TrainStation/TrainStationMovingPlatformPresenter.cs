@@ -1,5 +1,4 @@
-﻿using System.Reactive.Linq;
-using UniRx;
+﻿using UniRx;
 using UnityEngine;
 
 public class TrainStationMovingPlatformPresenter : PresenterBehaviour<TrainStation>
