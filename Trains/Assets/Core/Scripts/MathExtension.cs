@@ -11,7 +11,7 @@ public static class MathExtension
     }
 
     /// <summary>
-    /// in result [0,1]
+    /// [0,1]
     /// </summary>
     /// <param name=""></param>
     /// <returns></returns>
@@ -22,7 +22,7 @@ public static class MathExtension
 
 
     /// <summary>
-    /// in result [0,1]
+    /// [0,1]
     /// </summary>
     /// <param name=""></param>
     /// <returns></returns>

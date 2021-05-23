@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoadManager : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
         Manager.GetInstance().RegistrateOnModelRemove<TrainStation>(this, OnRemoveConnectionPoint);
     }

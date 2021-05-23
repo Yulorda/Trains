@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TrainManager : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
         Manager.GetInstance().RegistrateOnModelRemove<Road>(this, OnConnectionRemove);
     }
@@ -48,11 +48,11 @@ public class TrainManager : MonoBehaviour
                         }
                     }
                 }
-
                 yield break;
             }
         }
     }
+
     protected IEnumerator CreateCoroutine()
     {
         while (true)
@@ -81,6 +81,7 @@ public class TrainManager : MonoBehaviour
             }
         }
     }
+
     public void Create(IConnection connection, RaycastHit hit)
     {
         var start = connection.PointStart.Value.Position.Value;

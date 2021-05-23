@@ -23,14 +23,24 @@ public class Manager
         return manager;
     }
 
-    public void RegistrateModel<T>(T value)
+    public void RegistrateModel<T>(T model)
     {
-        var presenters = genericListeners.Invoke(value, typeof(T));
+        var presenters = genericListeners.Invoke(model, typeof(T));
         if (presenters != null)
         {
-            disposableGroup.Add(value, presenters);
+            disposableGroup.Add(model, presenters);
         }
-        models[typeof(T)].Add(value);
+        models[typeof(T)].Add(model);
+    }
+
+    public void RegistrateModel(object model, Type t)
+    {
+        var presenters = genericListeners.Invoke(model, t);
+        if (presenters != null)
+        {
+            disposableGroup.Add(model, presenters);
+        }
+        models[t].Add(model);
     }
 
     public void RegistrateFactory<T>(IFactory<T> factory) where T : class

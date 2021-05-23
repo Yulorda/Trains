@@ -1,11 +1,10 @@
 using System.Collections;
-using UniRx;
 using UnityEngine;
 
 public class TrainStationManager : MonoBehaviour
 {
     [SerializeField]
-    FollowMouseMover followMouseMover;
+    private FollowMouseMover followMouseMover;
 
     public virtual void Create()
     {

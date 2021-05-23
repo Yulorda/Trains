@@ -1,4 +1,5 @@
-﻿using UniRx;
+﻿using System.Runtime.Serialization;
+using UniRx;
 
 public interface IConnection
 {
