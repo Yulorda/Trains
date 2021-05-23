@@ -69,4 +69,10 @@ public class Manager
         models[typeof(T)].Remove(value);
         disposableGroup.Dispose(value);
     }
+
+    public void Remove(object value, Type t)
+    {
+        models[t].Remove(value);
+        disposableGroup.Dispose(value);
+    }
 }

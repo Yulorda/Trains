@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 public class SaveLoadSystem
@@ -108,6 +109,12 @@ public class SaveLoadSystem
 
     public static void Load(SaveSnapshot saveSnapshot)
     {
+        Manager.GetInstance().models
+            .Where(x => typeof(IConnectionPoint).IsAssignableFrom(x.Key))
+            .Select(y => y.Value).SelectMany(u => u)
+            .ToList()
+            .ForEach(z => Manager.GetInstance().Remove(z, z.GetType()));
+
         var dicConnectionPoint = saveSnapshot.models.Where(x => x.type == typeof(SaveSnapshot.ConnectionPoint)).
             Select(y =>
             {

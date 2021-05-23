@@ -9,9 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8728429533155869937}
-  - component: {fileID: 2270979885862687515}
-  - component: {fileID: 2270979885862687517}
-  - component: {fileID: 2270979885862687516}
   m_Layer: 5
   m_Name: ConnectionPointManager
   m_TagString: Untagged
@@ -34,40 +31,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!222 &2270979885862687515
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2270979885862687519}
-  m_CullTransparentMesh: 1
---- !u!114 &2270979885862687517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2270979885862687519}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dda035ec2275614996135a048300ca3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pointPresenterFactory: {fileID: 2270979886790745381}
-  followMouseMover: {fileID: 2270979885862687516}
---- !u!114 &2270979885862687516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2270979885862687519}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46af41537faeb98448ccd0af5bddbfc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2270979886790745382
 GameObject:
   m_ObjectHideFlags: 0
