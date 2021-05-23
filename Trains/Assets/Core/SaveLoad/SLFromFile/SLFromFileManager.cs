@@ -1,10 +1,16 @@
 using System.IO;
 using UnityEngine;
+using Zenject;
 
 public class SLFromFileManager : MonoBehaviour
 {
     public string saveName = "Save";
     public string directory = null;
+
+    [Inject]
+    SaveLoadSystem saveLoadSystem;
+    [Inject]
+    JSONSerializator jSONSerializator;
 
     private void Awake()
     {
@@ -17,8 +23,8 @@ public class SLFromFileManager : MonoBehaviour
     public void Save()
     {
         StopAllCoroutines();
-        var result = SaveLoadSystem.GetSave();
-        var information = JSONSerializator.GetSerializator().Serialize(result);
+        var result = saveLoadSystem.GetSave();
+        var information = jSONSerializator.Serialize(result);
 
         var resultPath = Path.Combine(directory, saveName + ".json");
 
@@ -32,9 +38,9 @@ public class SLFromFileManager : MonoBehaviour
     {
         StopAllCoroutines();
         
-        if(JSONSerializator.GetSerializator().TryDeserialize(File.ReadAllBytes(Path.Combine(directory, saveName + ".json")),out var save))
+        if(jSONSerializator.TryDeserialize(File.ReadAllBytes(Path.Combine(directory, saveName + ".json")),out var save))
         {
-            SaveLoadSystem.Load((SaveSnapshot)save);
+            saveLoadSystem.Load((SaveSnapshot)save);
         }
     }
 

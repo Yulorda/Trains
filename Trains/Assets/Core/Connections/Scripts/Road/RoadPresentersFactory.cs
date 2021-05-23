@@ -1,14 +1,16 @@
 ﻿using System;
 using UnityEngine;
+using Zenject;
 
 public class RoadPresentersFactory : MonoBehaviour, IFactory<Road>
 {
     [SerializeField]
     RoadLRPresenterFactory LRPresenterFactory;
 
-    private void Awake()
+    [Inject]
+    private void RegistrateFactory(Manager manager)
     {
-        Manager.GetInstance().RegistrateFactory(this);
+        manager.RegistrateFactory(this);
     }
 
     public IDisposable Create(Road connection)

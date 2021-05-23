@@ -1,17 +1,20 @@
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public class TrainStationManager : MonoBehaviour
 {
     [SerializeField]
     private FollowMouseMover followMouseMover;
+    [Inject]
+    private Manager manager;
 
     public virtual void Create()
     {
         StopAllCoroutines();
         var train = new TrainStation();
         followMouseMover.Inject(train);
-        Manager.GetInstance().RegistrateModel(train);
+        manager.RegistrateModel(train);
     }
 
     public virtual void Delete()
@@ -43,7 +46,7 @@ public class TrainStationManager : MonoBehaviour
                         var connectorPresenter = hit.collider.gameObject.GetComponent<TrainStationMovingPlatformPresenter>();
                         if (connectorPresenter?.model != null)
                         {
-                            Manager.GetInstance().Remove(connectorPresenter?.model);
+                            manager.Remove(connectorPresenter?.model);
                         }
                     }
                 }

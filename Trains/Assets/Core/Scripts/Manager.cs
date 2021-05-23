@@ -4,26 +4,17 @@ using UniRx;
 public class Manager
 {
     private DisposableGroup disposableGroup = new DisposableGroup();
-    private GenericFunctions genericListeners = new GenericFunctions();
+    private GenericFunctions genericFunctions = new GenericFunctions();
     public ReactiveDictionary<Type, ReactiveCollection<object>> models = new ReactiveDictionary<Type, ReactiveCollection<object>>();
-
-    private static Manager manager;
 
     private Manager()
     {
-    }
 
-    public static Manager GetInstance()
-    {
-        if (manager == null)
-            manager = new Manager();
-
-        return manager;
     }
 
     public void RegistrateModel<T>(T model)
     {
-        var presenters = genericListeners.Invoke(model, typeof(T));
+        var presenters = genericFunctions.Invoke(model, typeof(T));
         if (presenters != null)
         {
             disposableGroup.Add(model, presenters);
@@ -33,7 +24,7 @@ public class Manager
 
     public void RegistrateModel(object model, Type t)
     {
-        var presenters = genericListeners.Invoke(model, t);
+        var presenters = genericFunctions.Invoke(model, t);
         if (presenters != null)
         {
             disposableGroup.Add(model, presenters);
@@ -43,7 +34,7 @@ public class Manager
 
     public void RegistrateFactory<T>(IFactory<T> factory) where T : class
     {
-        genericListeners.SetFunction<T>(factory.Create);
+        genericFunctions.SetFunction<T>(factory.Create);
         models.Add(typeof(T), new ReactiveCollection<object>());
     }
 

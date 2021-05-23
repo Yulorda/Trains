@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class RoadManager : MonoBehaviour
 {
-    private void Start()
+    [Inject]
+    Manager manager;
+
+    private void Awake()
     {
-        Manager.GetInstance().RegistrateOnModelRemove<TrainStation>(this, OnRemoveConnectionPoint);
+        manager.RegistrateOnModelRemove<TrainStation>(this, OnRemoveConnectionPoint);
     }
 
     public virtual void Create()
@@ -44,7 +48,7 @@ public class RoadManager : MonoBehaviour
                         var connectorPresenter = hit.collider.gameObject.GetComponentInParent<RoadLRPresenter>();
                         if (connectorPresenter != null)
                         {
-                            Manager.GetInstance().Remove(connectorPresenter.model);
+                            manager.Remove(connectorPresenter.model);
                         }
                     }
                 }
@@ -82,7 +86,7 @@ public class RoadManager : MonoBehaviour
                         var connection = new Road(pointStart, pointEnd);
                         if (ValidateConnection(connection))
                         {
-                            Manager.GetInstance().RegistrateModel(connection);
+                            manager.RegistrateModel(connection);
                         }
                     }
                     break;
@@ -111,7 +115,7 @@ public class RoadManager : MonoBehaviour
     {
         List<Road> removeList = new List<Road>();
 
-        foreach (Road connection in Manager.GetInstance().models[typeof(Road)])
+        foreach (Road connection in manager.models[typeof(Road)])
         {
             if (connectionPoint == connection.PointStart.Value || connectionPoint == connection.PointEnd.Value)
             {
@@ -121,7 +125,7 @@ public class RoadManager : MonoBehaviour
 
         foreach(var road in removeList)
         {
-            Manager.GetInstance().Remove(road);
+            manager.Remove(road);
         }
     }
 
@@ -129,7 +133,7 @@ public class RoadManager : MonoBehaviour
     {
         if (connection.PointStart.Value != connection.PointEnd.Value)
         {
-            foreach (Road save in Manager.GetInstance().models[typeof(Road)])
+            foreach (Road save in manager.models[typeof(Road)])
             {
                 if (save.PointStart.Value != connection.PointEnd.Value && save.PointStart.Value != connection.PointStart.Value)
                 {

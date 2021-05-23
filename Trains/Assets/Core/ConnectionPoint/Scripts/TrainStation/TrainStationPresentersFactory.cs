@@ -1,14 +1,16 @@
 ﻿using System;
 using UnityEngine;
+using Zenject;
 
 public class TrainStationPresentersFactory : MonoBehaviour, IFactory<TrainStation>
 {
     [SerializeField]
     TrainStationMovingPlatformPresenterFactory movingPlatformFactory;
 
-    private void Awake()
+    [Inject]
+    private void RegistrateFactory(Manager manager)
     {
-        Manager.GetInstance().RegistrateFactory(this);
+        manager.RegistrateFactory(this);
     }
 
     public IDisposable Create(TrainStation connection)

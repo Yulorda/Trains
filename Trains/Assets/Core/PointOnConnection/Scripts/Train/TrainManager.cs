@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class TrainManager : MonoBehaviour
 {
+    [Inject]
+    Manager manager;
+
     private void Start()
     {
-        Manager.GetInstance().RegistrateOnModelRemove<Road>(this, OnConnectionRemove);
+        manager.RegistrateOnModelRemove<Road>(this, OnConnectionRemove);
     }
 
     public virtual void Create()
@@ -44,7 +48,7 @@ public class TrainManager : MonoBehaviour
                         var connectorPresenter = hit.collider.gameObject.GetComponent<TrainMovingPlatformPresenter>();
                         if (connectorPresenter != null)
                         {
-                            Manager.GetInstance().Remove(connectorPresenter.model);
+                            manager.Remove(connectorPresenter.model);
                         }
                     }
                 }
@@ -87,14 +91,14 @@ public class TrainManager : MonoBehaviour
         var start = connection.PointStart.Value.Position.Value;
         var end = connection.PointEnd.Value.Position.Value;
         Train train = new Train(connection, MathExtension.GetPointOnLine(start, end, hit.point));
-        Manager.GetInstance().RegistrateModel(train);
+        manager.RegistrateModel(train);
     }
 
     private void OnConnectionRemove(Road road)
     {
         List<Train> removeList = new List<Train>();
 
-        foreach (Train train in Manager.GetInstance().models[typeof(Train)])
+        foreach (Train train in manager.models[typeof(Train)])
         {
             if (train.Connection.Value == road)
             {
@@ -104,7 +108,7 @@ public class TrainManager : MonoBehaviour
 
         foreach (var train in removeList)
         {
-            Manager.GetInstance().Remove(train);
+            manager.Remove(train);
         }
     }
 }
